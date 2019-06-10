@@ -19,5 +19,11 @@ export const styles = StyleSheet.create({
     color: "white",
     fontWeight: "700",
     fontSize: 20
+  },
+  input: {
+    backgroundColor: 'white',
+    width: '90%',
+    fontSize: 24,
+    padding: 15
   }
 });

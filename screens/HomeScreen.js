@@ -22,13 +22,11 @@ export class HomeScreen extends Component {
         <View style={[container, buttonHolder]}>
           <NavButton
             text="Find a location"
-            screen="Search"
-            navigation={navigation}
+            callback={() => navigation.navigate("Search")}
           />
           <NavButton
             text="Anonymously Share Status"
-            screen="Contacts"
-            navigation={navigation}
+            callback={() => navigation.navigate("Contacts")}
           />
         </View>
       </View>
@@ -37,7 +35,7 @@ export class HomeScreen extends Component {
 }
 
 
-export const localStyles = StyleSheet.create({
+const localStyles = StyleSheet.create({
   buttonHolder: {
     flex: 0.3,
     width: '90%'

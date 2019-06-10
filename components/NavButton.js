@@ -6,7 +6,7 @@ export const NavButton = (props) => {
   return (
       <TouchableHighlight
         style={styles.button}
-        onPress={() => props.navigation.navigate(props.screen)}
+        onPress={props.callback}
       >
       <Text style={styles.buttonText}>{props.text}</Text>
       </TouchableHighlight>
