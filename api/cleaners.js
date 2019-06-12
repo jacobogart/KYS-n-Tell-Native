@@ -9,10 +9,20 @@ export const locationCleaner = (location) => {
   
   return {
     title,
-    link,
     id: shortId,
     address,
     telephone,
     point: formatedPoint
+  }
+};
+
+export const detailsCleaner = (result) => {
+  const website = result.result.website;
+  const hours = result.result.opening_hours.weekday_text;
+  const photoRef = result.result.photos[0].photo_reference;
+  return {
+    website,
+    hours,
+    photoRef
   }
 }
