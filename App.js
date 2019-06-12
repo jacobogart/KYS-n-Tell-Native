@@ -8,13 +8,15 @@ import SearchScreen from './screens/SearchScreen';
 import { ContactsScreen } from './screens/ContactsScreen';
 import { rootReducer } from './reducers';
 import ResultsScreen from './screens/ResultsScreen';
+import LocationScreen from './screens/LocationScreen';
 
 const AppNavigator = createStackNavigator(
   {
     Home: HomeScreen, 
     Search: SearchScreen,
     Contacts: ContactsScreen,
-    Results: ResultsScreen
+    Results: ResultsScreen,
+    Location: LocationScreen
   },
   {
     initialRouteName: "Home"

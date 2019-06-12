@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, View, Button } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { styles } from '../styles/mainStyles';
 import { NavButton } from '../components/NavButton';
+import { ResultCard } from '../components/ResultCard';
 
 class ResultsScreen extends Component {
   render() {
-    const results = this.props.locations.map(location => <Text>{location.title}</Text>)
+    const { locations } = this.props;
+    const { page } = localStyles;
+    const results = locations.map(location => 
+      <ResultCard 
+        key={location.id} 
+        {...location} 
+        user={this.props.user} 
+        navigate={this.props.navigation.navigate}
+      />);
+    
     return (
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={page}>
         {results}
-      </View>
+      </ScrollView>
     )
   }
 }
@@ -21,3 +31,12 @@ export const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(ResultsScreen);
+
+const localStyles = StyleSheet.create({
+  page: {
+    backgroundColor: '#3f3f3f',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingVertical: 50
+  }
+});

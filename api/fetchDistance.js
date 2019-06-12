@@ -1,7 +1,6 @@
-import { googleRoot } from "./utilities";
+import { googleRoot, googleKey } from "./utilities";
 
-export const fetchDistance = (origin, destination) => {  
-  const googleKey = process.env.REACT_APP_GOOGLE_KEY;
+export const fetchDistance = (origin, destination) => { 
   return fetch(`${googleRoot}distancematrix/json?origins=${origin.lat},${origin.lng}&destinations=${destination.lat},${destination.lng}&units=imperial&key=${googleKey}`)
     .then(response => {
       if(!response.ok) {
@@ -11,4 +10,5 @@ export const fetchDistance = (origin, destination) => {
       }
     })
     .then(result => result.rows[0].elements[0].distance.text)
+    .catch(error => console.log(error))
 }
