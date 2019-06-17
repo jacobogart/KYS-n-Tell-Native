@@ -31,11 +31,14 @@ class LocationScreen extends Component {
     const { detailsHolder, contactHolder, titleText, addressText, linkText } = localStyles;
     const globe = <Icon name="globe" size={21} color="#db938f" />;
     const phone = <Icon name="phone" size={21} color="#db938f" />;
-
+    const smallTitle = title.length > 35
+      ? { fontSize: 30 }
+      : null;
+    
     return (
       <View style={styles.container}>
         <View style={detailsHolder}>
-          <Text style={titleText}>
+          <Text style={[titleText, smallTitle]}>
             {title}
           </Text>
           <Text style={addressText}>
