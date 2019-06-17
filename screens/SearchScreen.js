@@ -6,6 +6,7 @@ import { NavButton } from '../components/NavButton';
 import { setLocations, setUserLocation } from '../actions/index';
 import { fetchLatLong } from '../api/fetchLatLong';
 import { fetchLocations } from '../api/fetchLocations';
+import { Footer } from '../components/Footer';
 
 class SearchScreen extends Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class SearchScreen extends Component {
   render() {
     const { isLoading, error, zipcode, distance } = this.state;
     const { container, input, button, buttonText } = styles;
-    const { heading } = localStyles;
+    const { heading, loader, loaderHolder } = localStyles;
     const form = (
       <View style={[container, localStyles.form]}>
         <Text style={heading}>Search for HIV/STD tesing centers near you</Text>
@@ -76,14 +77,18 @@ class SearchScreen extends Component {
       </View>
     );
     const loading = (
-      <View>
-        <Image source={{uri:"http://i66.tinypic.com/9v8d4k.gif"}} />
+      <View style={loaderHolder}>
+        <Image 
+          style={loader}
+          source={{uri:"http://i66.tinypic.com/9v8d4k.gif"}} 
+        />
       </View>
     );
 
     return (
       <View style={container}>
         {isLoading ? loading : form}
+        <Footer/>
       </View>
     )
   }
@@ -112,7 +117,7 @@ const localStyles = StyleSheet.create({
   form: {
     marginTop: 30,
     width: '100%',
-    flex: 0.8
+    flex: 0.9
   },
   heading: {
     color: 'white',
@@ -120,6 +125,15 @@ const localStyles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: 20,
     fontWeight: '600'
+  },
+  loader: {
+    height: 200,
+    width: 200,
+    margin: -20
+  },
+  loaderHolder: {
+    backgroundColor: 'white',
+    borderRadius: 200
   }
 });
 
