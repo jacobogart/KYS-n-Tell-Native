@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { styles } from '../styles/mainStyles';
 import { NavButton } from '../components/NavButton';
+import { Footer } from '../components/Footer';
 
 export class HomeScreen extends Component {
   static navigationOptions = {
@@ -14,12 +15,12 @@ export class HomeScreen extends Component {
     const { navigation } = this.props;
     return (
       <View style={[container, page]}>
-        <View style={[container, headingHolder]}>
+        <View style={headingHolder}>
           <Text style={subTitle}>Know Your Status</Text>
           <Text style={title}>KYS n' Tell</Text>
           <Text style={subTitle}>Tell Your Partners</Text>
         </View>
-        <View style={[container, buttonHolder]}>
+        <View style={buttonHolder}>
           <NavButton
             text="Find a location"
             callback={() => navigation.navigate("Search")}
@@ -29,6 +30,7 @@ export class HomeScreen extends Component {
             callback={() => navigation.navigate("Contacts")}
           />
         </View>
+        <Footer/>
       </View>
     )
   }
@@ -38,7 +40,9 @@ export class HomeScreen extends Component {
 const localStyles = StyleSheet.create({
   buttonHolder: {
     flex: 0.3,
-    width: '90%'
+    width: '90%',
+    alignItems: 'center',
+    justifyContent: 'space-around'
   },
   title: {
     color: 'white',
@@ -57,6 +61,8 @@ const localStyles = StyleSheet.create({
   },
   headingHolder: {
     flex: 0.3,
+    alignItems: 'center',
+    justifyContent: 'space-around'
   },
   page: {
     paddingTop: 100,
