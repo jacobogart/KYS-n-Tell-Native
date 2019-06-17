@@ -5,10 +5,11 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { HomeScreen } from './screens/HomeScreen';
 import SearchScreen from './screens/SearchScreen';
-import { ContactsScreen } from './screens/ContactsScreen';
+import ContactsScreen from './screens/ContactsScreen';
 import { rootReducer } from './reducers';
 import ResultsScreen from './screens/ResultsScreen';
 import LocationScreen from './screens/LocationScreen';
+import DetailsScreen from './screens/DetailsScreen';
 
 const AppNavigator = createStackNavigator(
   {
@@ -16,7 +17,8 @@ const AppNavigator = createStackNavigator(
     Search: SearchScreen,
     Contacts: ContactsScreen,
     Results: ResultsScreen,
-    Location: LocationScreen
+    Location: LocationScreen,
+    Details: DetailsScreen
   },
   {
     initialRouteName: "Home"
