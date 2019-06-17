@@ -10,6 +10,7 @@ import { rootReducer } from './reducers';
 import ResultsScreen from './screens/ResultsScreen';
 import LocationScreen from './screens/LocationScreen';
 import DetailsScreen from './screens/DetailsScreen';
+import PreviewScreen from './screens/PreviewScreen';
 
 const AppNavigator = createStackNavigator(
   {
@@ -18,7 +19,8 @@ const AppNavigator = createStackNavigator(
     Contacts: ContactsScreen,
     Results: ResultsScreen,
     Location: LocationScreen,
-    Details: DetailsScreen
+    Details: DetailsScreen,
+    Preview: PreviewScreen
   },
   {
     initialRouteName: "Home"
