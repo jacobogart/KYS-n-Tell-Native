@@ -8,7 +8,7 @@ import { fetchLatLong } from '../api/fetchLatLong';
 import { fetchLocations } from '../api/fetchLocations';
 import { Footer } from '../components/Footer';
 
-class DetailsScreen extends Component {
+class PreviewScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,22 +18,8 @@ class DetailsScreen extends Component {
     };
   }
 
-  handleChange = (name, value) => {
-    this.setState({ [name]: value });
-  }
-
-  generateOptions = (options) => {
-    return options.map(item => <Picker.Item key={item} value={item} label={item} />)
-  }
-
-  handleSubmit = () => {
-    const details = { ...this.state }
-    this.props.setDetails(details);
-    this.props.navigation.navigate("Preview")
-  }
-  
-
   render() {
+    console.log(this.props);
     const { isLoading, error, zipcode, distance } = this.state;
     const { container, input, button, buttonText } = styles;
     const { heading, pickerHolder, label } = localStyles;
@@ -42,7 +28,8 @@ class DetailsScreen extends Component {
 
     return (
       <View style={container}>
-        <View style={pickerHolder}>
+        <Text>PREVIEW</Text>
+        {/* <View style={pickerHolder}>
           <Text style={label}>Diagnosis</Text>
           <Picker
             style={localStyles.picker}
@@ -76,22 +63,23 @@ class DetailsScreen extends Component {
           onPress={() => this.handleSubmit(zipcode, distance)}
         >
           <Text style={buttonText}>Search</Text>
-        </TouchableHighlight>
-        <Footer/>
+        </TouchableHighlight> */}
+        <Footer />
       </View>
     )
   }
 }
 
 export const mapStateToProps = (state) => ({
-  contacts: state.contacts
+  contacts: state.contacts,
+  details: state.details
 });
 
 export const mapDispatchToProps = (dispatch) => ({
-  setDetails: (details) => dispatch(setDetails(details))
+  setContacts: (contacts) => dispatch(setContacts(contacts))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DetailsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(PreviewScreen);
 
 const localStyles = StyleSheet.create({
   picker: {

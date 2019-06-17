@@ -33,17 +33,10 @@ export const detailsCleaner = (result) => {
 
 export const contactsCleaner = (contacts) => {
   const withPhone = contacts.filter(contact => contact.phoneNumbers);
-  let numberData;
-  return withPhone.map(contact => {
-    if (contact.phoneNumbers.length > 1) {
-      numberData = contact.phoneNumbers.find(number => number.label === 'mobile')
-    } else {
-      numberData = contact.phoneNumbers[0]
-    }
-    return {
+  return withPhone.map(contact => ({
       name: contact.name,
-      phone: phone(numberData.number)[0],
+      phone: phone(contact.phoneNumbers[0].number)[0],
       id: contact.id
-    }
-  });
+    })
+  );
 }
