@@ -43,7 +43,7 @@ export class ResultCard extends Component {
 
 const localStyles = StyleSheet.create({
   card: {
-    width: '100%',
+    width: '116%',
     backgroundColor: 'white',
     margin: 3,
     flex: 1
