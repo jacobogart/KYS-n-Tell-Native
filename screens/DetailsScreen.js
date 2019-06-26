@@ -7,8 +7,13 @@ import { setLocations, setUserLocation, setDetails } from '../actions/index';
 import { fetchLatLong } from '../api/fetchLatLong';
 import { fetchLocations } from '../api/fetchLocations';
 import { Footer } from '../components/Footer';
+import { HeaderTitle } from '../components/HeaderTitle';
 
 class DetailsScreen extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    headerTitle: <HeaderTitle navigation={navigation} title='TELL' />
+  });
+
   constructor(props) {
     super(props);
     this.state = {

@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, StyleSheet } from 'react-native';
-import { styles } from '../styles/mainStyles';
-import { NavButton } from '../components/NavButton';
 import { ResultCard } from '../components/ResultCard';
+import { HeaderTitle } from '../components/HeaderTitle';
 
 class ResultsScreen extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    headerTitle: <HeaderTitle navigation={navigation} title='KYS' />
+  });
+
   render() {
     const { locations } = this.props;
     const { page } = localStyles;
@@ -37,6 +40,6 @@ const localStyles = StyleSheet.create({
     backgroundColor: '#3f3f3f',
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingVertical: 50
+    paddingBottom: 50
   }
 });

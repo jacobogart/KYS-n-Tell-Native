@@ -4,8 +4,13 @@ import { Text, View, TouchableHighlight, StyleSheet, ScrollView } from 'react-na
 import { styles } from '../styles/mainStyles';
 import { Footer } from '../components/Footer';
 import { fetchSendMessage } from '../api/fetchSendMessage';
+import { HeaderTitle } from '../components/HeaderTitle';
 
 class PreviewScreen extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    headerTitle: <HeaderTitle navigation={navigation} title='TELL' />
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -154,7 +159,8 @@ const localStyles = StyleSheet.create({
     height: 300
   }, 
   messageText: {
-    fontSize: 20
+    fontSize: 20,
+    color: 'white'
   }
 });
 

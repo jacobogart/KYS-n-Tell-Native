@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(pino);
 
-app.get('/api', (req, res) => {
+app.get('/api/messages', (req, res) => {
   res.send('HELLOO')
 })
 

@@ -66,7 +66,7 @@ const localStyles = StyleSheet.create({
   },
   page: {
     paddingTop: 100,
-    paddingBottom: 50
+    paddingBottom: 100
   }
 });
 

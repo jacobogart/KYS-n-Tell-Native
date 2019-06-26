@@ -6,8 +6,13 @@ import { NavButton } from '../components/NavButton';
 import { fetchContacts } from '../api/fetchContacts';
 import { Footer } from '../components/Footer';
 import { setContacts } from '../actions';
+import { HeaderTitle } from '../components/HeaderTitle';
 
 class ContactsScreen extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    headerTitle: <HeaderTitle navigation={navigation} title='TELL' />
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -39,7 +44,7 @@ class ContactsScreen extends Component {
 
   render() {
     const { container, input, button, buttonText } = styles;
-    const { heading, contactScreen, pleaseText, contactResult, searchHolder, resultText, contactsHolder, contactText, resultsHolder } = localStyles;
+    const { heading, pleaseText, contactResult, searchHolder, resultText, contactsHolder, contactText, resultsHolder } = localStyles;
     const results = this.state.results.slice(0, 4).map(result => 
       <TouchableHighlight
         key={result.id}
@@ -61,7 +66,7 @@ class ContactsScreen extends Component {
     );
 
     return (
-      <View style={[container, contactScreen]}>
+      <View style={container}>
         <Text style={heading}>Add recent sexual partners to your contact list</Text>
         <View style={searchHolder}>
           <TextInput
@@ -99,9 +104,6 @@ export const mapDispatchToProps = (dispatch) => ({
 export default connect(null, mapDispatchToProps)(ContactsScreen);
 
 const localStyles = StyleSheet.create({
-  contactScreen: {
-    paddingTop: 20
-  },
   contactResult: {
     width: '90%',
     backgroundColor: '#db938f',
@@ -126,7 +128,8 @@ const localStyles = StyleSheet.create({
   },
   contactText: {
     margin: 10,
-    fontSize: 25
+    fontSize: 25,
+    color: 'white'
   },
   pleaseText: {
     textAlign: 'center',

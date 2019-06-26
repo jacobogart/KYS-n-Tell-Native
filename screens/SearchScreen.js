@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Text, View, TextInput, Picker, TouchableHighlight, Image, StyleSheet } from 'react-native';
 import { styles } from '../styles/mainStyles';
-import { NavButton } from '../components/NavButton';
 import { setLocations, setUserLocation } from '../actions/index';
 import { fetchLatLong } from '../api/fetchLatLong';
 import { fetchLocations } from '../api/fetchLocations';
 import { Footer } from '../components/Footer';
+import { HeaderTitle } from '../components/HeaderTitle';
 
 class SearchScreen extends Component {
+  static navigationOptions = ({navigation}) => ({
+    headerTitle: <HeaderTitle navigation={navigation} title='KYS'/>
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -117,7 +121,7 @@ const localStyles = StyleSheet.create({
   form: {
     marginTop: 30,
     width: '100%',
-    flex: 0.9
+    flex: 1.2
   },
   heading: {
     color: 'white',

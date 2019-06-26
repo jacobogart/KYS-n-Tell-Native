@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { styles } from '../styles/mainStyles';
 import { Footer } from '../components/Footer';
+import { HeaderTitle } from '../components/HeaderTitle';
 
 export class SuccessScreen extends Component {
-  static navigationOptions = {
-    header: null
-  };
+  static navigationOptions = ({ navigation }) => ({
+    headerTitle: <HeaderTitle navigation={navigation} title='TELL' />
+  });
 
   render() {
     const { container } = styles;

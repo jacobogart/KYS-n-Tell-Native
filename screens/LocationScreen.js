@@ -7,8 +7,13 @@ import { connect } from 'react-redux';
 import { fetchPlaceID } from '../api/fetchPlaceID';
 import { fetchDetails } from '../api/fetchDetails';
 import { Footer } from '../components/Footer';
+import { HeaderTitle } from '../components/HeaderTitle';
 
 class LocationScreen extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    headerTitle: <HeaderTitle navigation={navigation} title='KYS' />
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -88,7 +93,7 @@ const localStyles = StyleSheet.create({
   detailsHolder: {
     backgroundColor: 'white',
     width: '90%',
-    height: '40%',
+    height: '45%',
     flexDirection: 'column',
     justifyContent: 'space-between',
     paddingVertical: 15,
