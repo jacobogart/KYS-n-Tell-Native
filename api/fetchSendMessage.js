@@ -1,6 +1,8 @@
+import { IP } from "./utilities";
+
 export const fetchSendMessage = (contacts, message) => {
   const messagePromises = contacts.map(contact => {
-    const body = { to: contact, message}
+    const body = { to: contact.phone, message}
     const options = {
     method: 'POST',
     headers: {
@@ -8,7 +10,7 @@ export const fetchSendMessage = (contacts, message) => {
     },
     body: JSON.stringify(body)
     }
-    return fetch('/api/messages', options)
+    return fetch(`http://${IP}:3001/api/messages`, options)
       .then(response => {
         if (!response.ok) {
           throw Error(`${contact}`)

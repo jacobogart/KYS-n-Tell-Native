@@ -4,8 +4,6 @@ export const geocodeUrl = 'https://maps.googleapis.com/maps/api/geocode/json?add
 
 export const googleRoot = 'https://maps.googleapis.com/maps/api/';
 
-// TWILIO_ACCOUNT_SID = 'ACcd171a99908800af1aed95890d739601'
-// TWILIO_AUTH_TOKEN = 'f4a2a76f5b90b8a470f27b95d85b229d'
-// TWILIO_PHONE_NUMBER = '+19132706114'
+export const googleKey = 'AIzaSyDHKnndIp7I8oymrxO0sDwpQUdZvfN1sqc';
 
-export const googleKey = 'AIzaSyDHKnndIp7I8oymrxO0sDwpQUdZvfN1sqc'
+export const IP = '192.168.1.80'

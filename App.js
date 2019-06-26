@@ -11,6 +11,8 @@ import ResultsScreen from './screens/ResultsScreen';
 import LocationScreen from './screens/LocationScreen';
 import DetailsScreen from './screens/DetailsScreen';
 import PreviewScreen from './screens/PreviewScreen';
+import { SuccessScreen } from './screens/SuccessScreen';
+import { ErrorScreen } from './screens/ErrorScreen';
 
 const AppNavigator = createStackNavigator(
   {
@@ -20,10 +22,12 @@ const AppNavigator = createStackNavigator(
     Results: ResultsScreen,
     Location: LocationScreen,
     Details: DetailsScreen,
-    Preview: PreviewScreen
+    Preview: PreviewScreen,
+    Success: SuccessScreen,
+    Error: ErrorScreen
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "Success"
   }
 );
 

@@ -73,9 +73,9 @@ class DetailsScreen extends Component {
         />
         <TouchableHighlight
           style={button}
-          onPress={() => this.handleSubmit(zipcode, distance)}
+          onPress={this.handleSubmit}
         >
-          <Text style={buttonText}>Search</Text>
+          <Text style={buttonText}>Preview</Text>
         </TouchableHighlight>
         <Footer/>
       </View>
