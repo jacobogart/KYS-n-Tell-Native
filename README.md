@@ -3,7 +3,7 @@
 #### [Web Version](https://github.com/jacobogart/KYSnTell)
 
 ### Know Your Status
-![Kys n' Tell Screenshot - Know Your Status](https://media.giphy.com/media/UW7x51bfjYEDI0ejn7/giphy.gif)
+![Kys n' Tell Screenshot - Know Your Status](https://media.giphy.com/media/VHldCjKebKcydKruQn/giphy.gif)
 ### Tell Your Partners
 ![Kys n' Tell Screenshot - Tell Your Partners](https://media.giphy.com/media/YRJxYE6SVBJTTQDZg0/giphy.gif)
 
