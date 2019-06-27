@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
 
 export const Map = (props) => {
   const  point = props.user.location;
@@ -12,6 +12,16 @@ export const Map = (props) => {
         longitude: +location.point.lng
       }}
     />)
+  const userMarker = props.user.location.geo
+    ? <Marker
+        coordinate={{
+          latitude: +props.user.location.lat,
+          longitude: +props.user.location.lng
+        }}
+        pinColor={'blue'}
+      />
+    : null;
+  
   return(
     <MapView
       style={{ flex: 1, width: '100%' }}
@@ -23,6 +33,7 @@ export const Map = (props) => {
         longitudeDelta: 1,
       }}
     >
+      {userMarker}
       {markers}
     </MapView>
   )

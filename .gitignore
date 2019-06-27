@@ -9,5 +9,5 @@ npm-debug.*
 web-build/
 web-report/
 .env
-./api/utilities.js
-./server/utilities.js
+/api/utilities.js
+/server/utilities.js

@@ -22,7 +22,6 @@ class ResultsScreen extends Component {
   toggleView = (text) => {
     this.setState({ active: text })
   }
-  
 
   render() {
     const { locations, user, navigation } = this.props;
@@ -38,7 +37,7 @@ class ResultsScreen extends Component {
       />);
     const listView = <ScrollView 
       showsHorizontalScrollIndicator={false}
-      overScrollMode={'never'} 
+      overScrollMode='never'
       contentContainerStyle={page} 
       directionalLockEnabled={true}>
         {results}
@@ -90,7 +89,6 @@ export default connect(mapStateToProps)(ResultsScreen);
 
 const localStyles = StyleSheet.create({
   page: {
-    marginTop:3,
     backgroundColor: '#3f3f3f',
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -104,6 +102,7 @@ const localStyles = StyleSheet.create({
   },
   buttonHolder: {
     flexDirection: 'row',
+    marginBottom: 3
   },
   toggleButton: {
     width: '50%',

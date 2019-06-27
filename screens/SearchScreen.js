@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, View, TextInput, Picker, TouchableHighlight, Image, StyleSheet } from 'react-native';
+import { Text, View, TextInput, Picker, TouchableHighlight, Image, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { styles } from '../styles/mainStyles';
 import { setLocations, setUserLocation } from '../actions/index';
 import { fetchLatLong } from '../api/fetchLatLong';
@@ -19,7 +19,9 @@ class SearchScreen extends Component {
       zipcode: '',
       distance: '',
       isLoading: false,
-      error: false
+      error: false,
+      showZipcode: false,
+      hideRange: false
     };
   }
 
@@ -27,15 +29,37 @@ class SearchScreen extends Component {
     this.setState({ [name]: text });
   }
 
-  handleSubmit = (zipcode, distance) => {
-    this.setState({ isLoading: true, error: false });
-    return fetchLatLong(zipcode)
+  getUserLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const cleanPosition = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+          geo: true
+        }
+        this.props.setUserLocation(cleanPosition);
+        this.handleSubmit(cleanPosition)},
+      error => console.log(error)
+    )
+  }
+
+  toggleShowZipcode = (bool) => {
+    this.setState({ showZipcode: bool });
+  }
+
+  handleSearch = () => {
+    return fetchLatLong(this.state.zipcode)
       .then(location => {
-        this.props.setUserLocation(location);
-        return fetchLocations(location, distance);
+        this.props.setUserLocation({...location, geo: false});
+        return this.handleSubmit(location);
       })
+  }
+
+  handleSubmit = (position) => {
+    this.setState({ isLoading: true, error: false });
+    fetchLocations(position, this.state.distance)
       .then(results => {
-        this.setState({ isLoading: false })
+        this.setState({ isLoading: false, showZipcode: false })
         if (results.length) {
           this.props.setLocations(results);
           this.props.navigation.navigate("Results");
@@ -46,39 +70,76 @@ class SearchScreen extends Component {
   }
 
   render() {
-    const { isLoading, error, zipcode, distance } = this.state;
+    const { isLoading, error, showZipcode, adjustZipInput } = this.state;
     const { container, input, button, buttonText } = styles;
-    const { heading, loader, loaderHolder } = localStyles;
+    const { heading, loader, loaderHolder, btnHolder, zipMargin, pickerMargin } = localStyles;
+    const adjustedZipMargin = adjustZipInput
+      ? zipMargin
+      : null;
+    const adjustedPickerMargin = adjustZipInput
+      ? pickerMargin
+      : null;
+    
+    const zipcodeInput = 
+      <TextInput
+        returnKeyType='done'
+        keyboardType={'numeric'}
+        style={[input, adjustedZipMargin]}
+        placeholder="Enter zipcode..."
+        value={this.state.zipcode}
+        onChangeText={(text) => this.handleChange('zipcode', text)}
+        onSubmitEditing={() => this.setState({ adjustZipInput: false })}
+        onFocus={() => this.setState({ adjustZipInput: true })}
+      />
+
+    const searchBtn = 
+      <TouchableHighlight
+        style={button}
+        onPress={this.handleSearch}
+      >
+        <Text style={buttonText}>Search</Text>
+      </TouchableHighlight>
+    
+    const locationBtn = 
+      <TouchableHighlight
+        style={button}
+        onPress={this.getUserLocation}
+      >
+        <Text style={buttonText}>Use Current Location</Text>
+      </TouchableHighlight>
+
+    const zipcodeBtn = 
+      <TouchableHighlight
+        style={button}
+        onPress={() => this.toggleShowZipcode(true)}
+      >
+        <Text style={buttonText}>Use zipcode</Text>
+      </TouchableHighlight>
+
     const form = (
-      <View style={[container, localStyles.form]}>
+      <KeyboardAvoidingView style={[container, localStyles.form]} behavior="padding" enabled>
         <Text style={heading}>Search for HIV/STD tesing centers near you</Text>
-        <TextInput
-          style={input}
-          placeholder="Enter zipcode..."
-          value={this.state.zipcode}
-          onChangeText={(text) => this.handleChange('zipcode', text)}
-        />
-        {error && <Text>No locations found, please increase range</Text>}
         <Picker
-          style={localStyles.picker} 
-          itemStyle={localStyles.pickerItem}            selectedValue={this.state.distance}
+          style={[localStyles.picker, adjustedPickerMargin]}
+          itemStyle={localStyles.pickerItem} selectedValue={this.state.distance}
           onValueChange={(itemValue) => this.handleChange('distance', itemValue)}
           className="search-input"
         >
-          <Picker.Item value="" enabled={false} label="Select distance..."/>
-          <Picker.Item value="10" label="10 miles"/>
-          <Picker.Item value="20" label="20 miles"/>
-          <Picker.Item value="30" label="30 miles"/>
-          <Picker.Item value="40" label="40 miles"/>
-          <Picker.Item value="50" label="50 miles"/>
+          <Picker.Item value="" enabled={false} label="Select range..." />
+          <Picker.Item value="10" label="10 miles" />
+          <Picker.Item value="20" label="20 miles" />
+          <Picker.Item value="30" label="30 miles" />
+          <Picker.Item value="40" label="40 miles" />
+          <Picker.Item value="50" label="50 miles" />
         </Picker>
-        <TouchableHighlight
-          style={button}
-          onPress={() => this.handleSubmit(zipcode, distance)}
-        >
-          <Text style={buttonText}>Search</Text>
-        </TouchableHighlight>
-      </View>
+        {error && <Text>No locations found, please increase range</Text>}
+        <View style={btnHolder}>
+          {showZipcode && zipcodeInput}
+          {!showZipcode && zipcodeBtn}
+          {showZipcode && searchBtn}
+          {!showZipcode && locationBtn}
+        </View>     
+      </KeyboardAvoidingView>
     );
     const loading = (
       <View style={loaderHolder}>
@@ -119,9 +180,9 @@ const localStyles = StyleSheet.create({
     color: 'black'
   },
   form: {
-    marginTop: 30,
     width: '100%',
-    flex: 1.2
+    flex: 0.9,
+    paddingBottom: 20
   },
   heading: {
     color: 'white',
@@ -138,7 +199,17 @@ const localStyles = StyleSheet.create({
   loaderHolder: {
     backgroundColor: 'white',
     borderRadius: 200
+  },
+  btnHolder: {
+    height: 180,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+  pickerMargin: {
+    marginTop: -30
+  },
+  zipMargin: {
+    marginTop: -60
   }
 });
-
-

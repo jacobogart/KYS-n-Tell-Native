@@ -134,7 +134,8 @@ const localStyles = StyleSheet.create({
   pleaseText: {
     textAlign: 'center',
     fontSize: 30,
-    margin: 20
+    margin: 20,
+    color: 'white'
   }, 
   resultsHolder: {
     alignItems: 'center',

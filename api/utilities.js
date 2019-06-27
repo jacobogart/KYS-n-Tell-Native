@@ -6,4 +6,4 @@ export const googleRoot = 'https://maps.googleapis.com/maps/api/';
 
 export const googleKey = 'AIzaSyDHKnndIp7I8oymrxO0sDwpQUdZvfN1sqc';
 
-export const IP = '192.168.1.80';
+export const IP = '10.1.3.83';

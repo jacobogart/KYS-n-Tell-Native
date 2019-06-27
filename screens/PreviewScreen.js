@@ -141,7 +141,8 @@ const localStyles = StyleSheet.create({
   },
   contactText: {
     margin: 10,
-    fontSize: 25
+    fontSize: 25,
+    color: 'white'
   },
   buttonHolder: {
     flexDirection: 'row'

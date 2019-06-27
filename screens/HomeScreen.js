@@ -39,7 +39,7 @@ export class HomeScreen extends Component {
 
 const localStyles = StyleSheet.create({
   buttonHolder: {
-    flex: 0.3,
+    flex: 0.35,
     width: '90%',
     alignItems: 'center',
     justifyContent: 'space-around'
