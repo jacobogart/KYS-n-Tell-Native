@@ -1,69 +1,120 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, View, TextInput, Picker, TouchableHighlight, Image, StyleSheet } from 'react-native';
+import { Text, View, TouchableHighlight, StyleSheet, ScrollView } from 'react-native';
 import { styles } from '../styles/mainStyles';
-import { NavButton } from '../components/NavButton';
-import { setLocations, setUserLocation, setDetails } from '../actions/index';
-import { fetchLatLong } from '../api/fetchLatLong';
-import { fetchLocations } from '../api/fetchLocations';
 import { Footer } from '../components/Footer';
+import { fetchSendMessage } from '../api/fetchSendMessage';
+import { HeaderTitle } from '../components/HeaderTitle';
 
 class PreviewScreen extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    headerTitle: <HeaderTitle navigation={navigation} title='TELL' />
+  });
+
   constructor(props) {
     super(props);
     this.state = {
-      diagnosis: '',
-      timeFrame: '',
-      additionalNotes: ''
+      message: '',
+      active: 'Message'
     };
   }
 
+  componentDidMount() {
+    this.setMessage();
+  }
+
+  setMessage = () => {
+    const { diagnosis, timeFrame, additionalNotes } = this.props.details;
+    let message = `Hello, we have been informed by an anonymous sexual partner that you may have been exposed to ${diagnosis} in the last ${timeFrame}. While this is no cause for alarm, we do recommend getting tested at your earliest convenience. To find a testing center near you, please visit kysntell.com, or contact your preferred healthcare provider.`
+    if (additionalNotes) { message = message.concat(' ', `Additional notes from partner: ${additionalNotes}`) }
+    this.setState({ message });
+  }
+
+  toggleView = (active) => {
+    this.setState({ active })
+  }
+
+  handleSend = () => {
+    return fetchSendMessage(this.props.contacts, this.state.message)
+      .then(res => {
+        if (res.every(res => res.ok)) {
+          this.props.navigation.navigate("Success")
+        } else {
+          this.handleError(res);
+        }
+      })
+      .catch(error => this.handleError())
+  }
+
+  handleError = (res) => {
+    if (res) {
+      const failedContacts = res.filter(res => !res.ok).map(res => res.contact);
+      this.props.setContacts(failedContacts);
+    }
+    this.props.navigation.navigate("Error")
+  }
+
   render() {
-    console.log(this.props);
-    const { isLoading, error, zipcode, distance } = this.state;
-    const { container, input, button, buttonText } = styles;
-    const { heading, pickerHolder, label } = localStyles;
-    const stds = ['HIV/AIDS', 'HPV(Human Papillomavirus)', 'Chlamydia', 'Gonorrhea', 'Syphilis', 'Herpes', 'Trichomoniasis'];
-    const timeFrames = ["month", "two months", "three months", "six months", "year"]
+    const { activeButton, contactText, activeText, buttonHolder, previewContainer, toggleButton, messageHolder, messageText } = localStyles;
+    const { container, button, buttonText } = styles;
+    const { message, active } = this.state;
+    let messageButton = active === 'Message'
+      ? activeButton
+      : null;
+    let contactsButton = active === 'Contacts'
+      ? activeButton
+      : null;
+    let messageBtnText = active === 'Message'
+      ? activeText
+      : null;
+    let contactsText = active === 'Contacts'
+      ? activeText
+      : null;
+    const contactList = this.props.contacts.map(contact =>
+      <Text
+        key={contact.id}
+        style={contactText}
+      >
+        {contact.name}
+      </Text>)
 
     return (
       <View style={container}>
-        <Text>PREVIEW</Text>
-        {/* <View style={pickerHolder}>
-          <Text style={label}>Diagnosis</Text>
-          <Picker
-            style={localStyles.picker}
-            itemStyle={localStyles.pickerItem} selectedValue={this.state.diagnosis}
-            onValueChange={(itemValue) => this.handleChange('diagnosis', itemValue)}
-          >
-            <Picker.Item value="" enabled={false} label="Select diagnosis..." />
-            {this.generateOptions(stds)}
-          </Picker>
-
+        <View style={previewContainer}>
+          <View style={buttonHolder}>
+            <TouchableHighlight
+              style={[button, toggleButton, messageButton]}
+              onPress={() => this.toggleView('Message')}
+            >
+              <Text style={[buttonText, messageBtnText]}>Message</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={[button, toggleButton, contactsButton]}
+              onPress={() => this.toggleView('Contacts')}
+            >
+              <Text style={[buttonText, contactsText]}>Contacts</Text>
+            </TouchableHighlight>
+          </View>
+          <View style={messageHolder}>
+            <ScrollView>
+              {active === 'Message' && 
+              <Text style={messageText}>
+                {message}
+              </Text>}
+              {active === 'Contacts' &&
+                <View>
+                  {contactList}
+                </View>
+              }
+            </ScrollView>
+          </View>
         </View>
-        <View style={pickerHolder}>
-          <Text style={label}>Time since last test</Text>
-          <Picker
-            style={localStyles.picker}
-            itemStyle={localStyles.pickerItem} selectedValue={this.state.timeFrame}
-            onValueChange={(itemValue) => this.handleChange('timeFrame', itemValue)}
-          >
-            <Picker.Item value="" enabled={false} label="Select time frame..." />
-            {this.generateOptions(timeFrames)}
-          </Picker>
-        </View>
-        <TextInput
-          style={input}
-          placeholder="Additional notes..."
-          value={this.state.additionalNotes}
-          onChangeText={(text) => this.handleChange('additionalNotes', text)}
-        />
         <TouchableHighlight
           style={button}
-          onPress={() => this.handleSubmit(zipcode, distance)}
+          onPress={this.handleSend}
         >
-          <Text style={buttonText}>Search</Text>
-        </TouchableHighlight> */}
+          <Text style={buttonText}>Send Message</Text>
+        </TouchableHighlight>
         <Footer />
       </View>
     )
@@ -82,40 +133,35 @@ export const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(PreviewScreen);
 
 const localStyles = StyleSheet.create({
-  picker: {
-    width: '90%',
-    height: 120,
+  activeButton: {
     backgroundColor: 'white',
-    borderColor: 'black',
-    borderWidth: 1,
   },
-  pickerItem: {
-    height: 120,
-    fontSize: 24,
+  activeText: {
     color: 'black'
   },
-  form: {
-    marginTop: 30,
-    width: '100%',
+  contactText: {
+    margin: 10,
+    fontSize: 25,
+    color: 'white'
   },
-  heading: {
-    color: 'white',
-    fontSize: 24,
-    textAlign: 'center',
-    paddingHorizontal: 20,
-    fontWeight: '600'
+  buttonHolder: {
+    flexDirection: 'row'
   },
-  pickerHolder: {
-    width: '100%',
-    alignItems: 'center'
+  previewContainer: {
+    width: '90%'
+  }, 
+  toggleButton: {
+    width: '50%',
+    borderRadius: 0
   },
-  label: {
-    color: 'white',
-    fontSize: 24,
-    alignSelf: 'flex-start',
-    fontWeight: '600',
-    marginBottom: 10,
-    marginLeft: 20
+  messageHolder: {
+    backgroundColor: 'grey',
+    padding: 10,
+    height: 300
+  }, 
+  messageText: {
+    fontSize: 20,
+    color: 'white'
   }
 });
 

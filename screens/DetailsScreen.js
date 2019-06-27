@@ -7,8 +7,13 @@ import { setLocations, setUserLocation, setDetails } from '../actions/index';
 import { fetchLatLong } from '../api/fetchLatLong';
 import { fetchLocations } from '../api/fetchLocations';
 import { Footer } from '../components/Footer';
+import { HeaderTitle } from '../components/HeaderTitle';
 
 class DetailsScreen extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    headerTitle: <HeaderTitle navigation={navigation} title='TELL' />
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +39,6 @@ class DetailsScreen extends Component {
   
 
   render() {
-    const { isLoading, error, zipcode, distance } = this.state;
     const { container, input, button, buttonText } = styles;
     const { heading, pickerHolder, label } = localStyles;
     const stds = ['HIV/AIDS', 'HPV(Human Papillomavirus)', 'Chlamydia', 'Gonorrhea', 'Syphilis', 'Herpes', 'Trichomoniasis'];
@@ -42,6 +46,12 @@ class DetailsScreen extends Component {
 
     return (
       <View style={container}>
+        <TextInput
+          style={input}
+          placeholder="Optional notes..."
+          value={this.state.additionalNotes}
+          onChangeText={(text) => this.handleChange('additionalNotes', text)}
+        />
         <View style={pickerHolder}>
           <Text style={label}>Diagnosis</Text>
           <Picker
@@ -52,7 +62,6 @@ class DetailsScreen extends Component {
             <Picker.Item value="" enabled={false} label="Select diagnosis..." />
             {this.generateOptions(stds)}
           </Picker>
-
         </View>
         <View style={pickerHolder}>
           <Text style={label}>Time since last test</Text>
@@ -65,17 +74,11 @@ class DetailsScreen extends Component {
             {this.generateOptions(timeFrames)}
           </Picker>
         </View>
-        <TextInput
-          style={input}
-          placeholder="Additional notes..."
-          value={this.state.additionalNotes}
-          onChangeText={(text) => this.handleChange('additionalNotes', text)}
-        />
         <TouchableHighlight
           style={button}
-          onPress={() => this.handleSubmit(zipcode, distance)}
+          onPress={this.handleSubmit}
         >
-          <Text style={buttonText}>Search</Text>
+          <Text style={buttonText}>Preview</Text>
         </TouchableHighlight>
         <Footer/>
       </View>

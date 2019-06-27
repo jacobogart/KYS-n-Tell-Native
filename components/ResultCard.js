@@ -6,33 +6,44 @@ export class ResultCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      distance: ''
+      distance: '',
+      height: 150.3
     };
   }
 
   componentDidMount() {
     const { user, point } = this.props
-
     fetchDistance(user.location, point)
       .then(distance => this.setState({ distance }))
+  }
+
+  handleTitle = (e) => {
+    const { height } = e.nativeEvent.layout;
+    if (height < 30) {
+      this.setState({ height: 121.7 });
+    } else if (height > 80) {
+      this.setState({ height: 175 });
+    }
   }
 
 
   render() {
     const { id, title, address } = this.props;
     const { card, innerCard, distance, headingText, distanceText, cardText, textArea } = localStyles; 
-
     return (
       <TouchableHighlight 
-        style={card} 
+        style={[card, { height: this.state.height}]} 
         onPress={() => this.props.navigate('Location', { id } )}
       >
         <View style={innerCard}>
           <View style={textArea}>
-            <Text style={headingText}>{title}</Text>
+            <Text 
+              style={headingText}
+              onLayout={(e) => this.handleTitle(e)}
+            >{title}</Text>
             <Text style={cardText}>{address.split(';')[0]} {"\n"}{address.split(';')[1]}</Text>
           </View>
-          <View style={distance}>
+          <View style={[distance, { height: this.state.height}]}>
             <Text style={distanceText}>{this.state.distance}</Text>
           </View>
         </View>
@@ -43,18 +54,16 @@ export class ResultCard extends Component {
 
 const localStyles = StyleSheet.create({
   card: {
-    width: '100%',
+    width: '116%',
     backgroundColor: 'white',
-    margin: 3,
-    flex: 1
+    margin: 3
   },
   innerCard: {
     flexDirection: 'row',
-    flex: 1,
   },
   textArea: {
     margin: 20,
-    width: '70%'
+    width: '70%',
   },
   distance: {
     padding: 15,

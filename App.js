@@ -11,6 +11,9 @@ import ResultsScreen from './screens/ResultsScreen';
 import LocationScreen from './screens/LocationScreen';
 import DetailsScreen from './screens/DetailsScreen';
 import PreviewScreen from './screens/PreviewScreen';
+import { SuccessScreen } from './screens/SuccessScreen';
+import { ErrorScreen } from './screens/ErrorScreen';
+import { BackImage } from './components/BackImage';
 
 const AppNavigator = createStackNavigator(
   {
@@ -20,7 +23,21 @@ const AppNavigator = createStackNavigator(
     Results: ResultsScreen,
     Location: LocationScreen,
     Details: DetailsScreen,
-    Preview: PreviewScreen
+    Preview: PreviewScreen,
+    Success: SuccessScreen,
+    Error: ErrorScreen
+  },
+  { 
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#3f3f3f',
+        height: 120,
+        borderBottomWidth: 0,
+      },
+      headerBackImage: <BackImage/>,
+      headerBackTitle: null,
+      headerTintColor: '#db938f'
+    }
   },
   {
     initialRouteName: "Home"

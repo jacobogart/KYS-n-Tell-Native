@@ -20,14 +20,12 @@ export const locationCleaner = (location) => {
 
 export const detailsCleaner = (result) => {
   const website = result.result.website;
-  const hours = result.result.opening_hours.weekday_text;
-  const photoRef = result.result.photos
-    ? result.result.photos[0].photo_reference 
-    : null;
+  // const hours = result.result.opening_hours.weekday_text;
+  // const photoRef = result.result.photos
+    // ? result.result.photos[0].photo_reference 
+    // : null;
   return {
-    website,
-    hours,
-    photoRef
+    website
   }
 }
 
